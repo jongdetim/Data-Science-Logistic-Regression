@@ -18,14 +18,17 @@ data = pd.read_csv(dataset_path)
 data.head()
 
 # %%
-data.dtypes
+print(data.dtypes)
 
 # %%
 
 # %%
-data['Astronomy'].notnull()
+# data['Astronomy'].notnull()
 
 # %%
-descr.sum(data['Astronomy'])
+col = data['Astronomy'].dropna().astype(float).tolist()
+
+# %%
+print(descr.sum(col))
 
 # %%
