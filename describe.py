@@ -1,13 +1,18 @@
 # %%
 import sys
+import numpy as np
 import pandas as pd
+import importlib
 
-from descriptive_funcs import Descriptives as descr
+import descriptives as descr
+
+#%%
+descr = importlib.reload(descr)
 
 # %%
 if not sys.__stdin__.isatty():
-    dataset_path = "datasets/dataset_test.csv"
-elif not len(sys.argv) > 1:
+    dataset_path = "datasets/dataset_train.csv"
+elif len(sys.argv) <= 1:
     print("please provide path to a .csv file")
     exit(1)
 else:
@@ -15,20 +20,30 @@ else:
 data = pd.read_csv(dataset_path)
 
 # %%
-data.head()
-
-# %%
+print(data.head())
 print(data.dtypes)
 
 # %%
+# Delete all rows with missing data from dataset
+# data = data.dropna()
 
 # %%
-# data['Astronomy'].notnull()
-
-# %%
+# deletes only elements in column that are missing
+print(len(data["Astronomy"]))
 col = data['Astronomy'].dropna().astype(float).tolist()
+print(len(col))
+print(data["Astronomy"].isna().sum())
 
 # %%
-print(descr.sum(col))
+print(descr.mean(col))
+print(descr.count(col))
+print(descr.min(col))
+print(descr.max(col))
+print(descr.var(col))
+print(descr.std(col))
+
+# %%
+print(np.percentile(col, 50, method='nearest'))
+print(descr.percentile(col, 50))
 
 # %%
