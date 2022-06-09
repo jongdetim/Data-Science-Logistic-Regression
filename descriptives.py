@@ -36,7 +36,13 @@ def var(data, df=1):
 def std(data):
     return var(data) ** 0.5
 
-def percentile(data, prcnt):
+def percentile(data, prcnt, interpolate=True):
     n = count(data)
-    p = n * prcnt / 100
-    return sorted(data)[int(p)]
+    h = (n - interpolate) * prcnt / 100
+    k = int(h)
+    data = sorted(data)
+    lower = data[k]
+    if not interpolate:
+        return lower
+    return lower + (h - k) * (data[k+1] - lower)
+    

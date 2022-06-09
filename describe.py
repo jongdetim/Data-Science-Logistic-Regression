@@ -1,8 +1,8 @@
 # %%
 import sys
+import importlib
 import numpy as np
 import pandas as pd
-import importlib
 
 import descriptives as descr
 
@@ -23,6 +23,9 @@ data = pd.read_csv(dataset_path)
 print(data.head())
 print(data.dtypes)
 
+#%%
+data.describe()
+
 # %%
 # Delete all rows with missing data from dataset
 # data = data.dropna()
@@ -30,7 +33,7 @@ print(data.dtypes)
 # %%
 # deletes only elements in column that are missing
 print(len(data["Astronomy"]))
-col = data['Astronomy'].dropna().astype(float).tolist()
+col = data['Astronomy'].dropna().astype(float)
 print(len(col))
 print(data["Astronomy"].isna().sum())
 
@@ -41,9 +44,8 @@ print(descr.min(col))
 print(descr.max(col))
 print(descr.var(col))
 print(descr.std(col))
-
-# %%
-print(np.percentile(col, 50, method='nearest'))
-print(descr.percentile(col, 50))
+print(descr.percentile(col, 25, interpolate=True))
+print(descr.percentile(col, 50, interpolate=True))
+print(descr.percentile(col, 75, interpolate=True))
 
 # %%
