@@ -1,8 +1,8 @@
 # %%
 import sys
 import importlib
-import numpy as np
 import pandas as pd
+import numpy as np
 
 import descriptives as descr
 
@@ -20,32 +20,36 @@ else:
 data = pd.read_csv(dataset_path)
 
 # %%
-print(data.head())
+# print(data.head())
 print(data.dtypes)
 
 #%%
 data.describe()
+data = data.select_dtypes([np.number])
+data = data.drop(['Index','index'], axis=1, errors='ignore')
+print(data.describe())
 
 # %%
-# Delete all rows with missing data from dataset
-# data = data.dropna()
+data_descriptives = pd.DataFrame(columns=data.columns)
+
+for col in data.columns:
+    newcol = []
+    cleaned_col = data[col].dropna().astype(float)
+    print(col)
+    newcol.append(descr.count(cleaned_col))
+    newcol.append(descr.mean(cleaned_col))
+    newcol.append(descr.std(cleaned_col))
+    newcol.append(descr.min(cleaned_col))
+    newcol.append(descr.percentile(cleaned_col, 25))
+    newcol.append(descr.percentile(cleaned_col, 50))
+    newcol.append(descr.percentile(cleaned_col, 75))
+    newcol.append(descr.max(cleaned_col))
+    data_descriptives[col] = newcol
+
+data_descriptives.index = ['Count', 'Mean', 
+'Std', 'Min', '25%', '50%', '75%', 'Max']
 
 # %%
-# deletes only elements in column that are missing
-print(len(data["Astronomy"]))
-col = data['Astronomy'].dropna().astype(float)
-print(len(col))
-print(data["Astronomy"].isna().sum())
-
-# %%
-print(descr.mean(col))
-print(descr.count(col))
-print(descr.min(col))
-print(descr.max(col))
-print(descr.var(col))
-print(descr.std(col))
-print(descr.percentile(col, 25, interpolate=True))
-print(descr.percentile(col, 50, interpolate=True))
-print(descr.percentile(col, 75, interpolate=True))
+print(data_descriptives)
 
 # %%
