@@ -35,7 +35,7 @@ data_descriptives = pd.DataFrame(columns=data.columns)
 for col in data.columns:
     newcol = []
     cleaned_col = data[col].dropna().astype(float)
-    print(col)
+    print(len(col))
     newcol.append(descr.count(cleaned_col))
     newcol.append(descr.mean(cleaned_col))
     newcol.append(descr.std(cleaned_col))
@@ -51,5 +51,6 @@ data_descriptives.index = ['Count', 'Mean',
 
 # %%
 print(data_descriptives)
+data.describe()
 
 # %%
