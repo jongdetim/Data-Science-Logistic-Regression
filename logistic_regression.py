@@ -21,41 +21,40 @@ class LogisticRegression:
         return cost
 
     # This function calculates the theta value by gradient descent
-    def _gradient_descent(self, X, h, theta, y, m):
-        gradient_value = np.dot(X.T, (h - y)) / m
+    def _gradient_descent(self, x, h, theta, y, m):
+        gradient_value = np.dot(x.T, (h - y)) / m
         theta -= self.alpha * gradient_value
         return theta
 
-    def fit(self, X, y):  # This function primarily calculates the optimal theta value using which we predict the future data
+    def fit(self, x, y):  # This function primarily calculates the optimal theta value using which we predict the future data
         print("Fitting the given dataset..")
-        X = np.insert(X, 0, 1, axis=1)
+        x = np.insert(x, 0, 1, axis=1)
         m = len(y)
         for i in np.unique(y):
             print('Descending the gradient for label type ' + str(i) + 'vs Rest')
             y_onevsall = np.where(y == i, 1, 0)
-            theta = np.zeros(X.shape[1])
+            theta = np.zeros(x.shape[1])
             cost = []
             for _ in range(self.n_iter):
-                z = X.dot(theta)
+                z = x.dot(theta)
                 h = self._sigmoid_function(z)
-                theta = self._gradient_descent(X, h, theta, y_onevsall, m)
+                theta = self._gradient_descent(x, h, theta, y_onevsall, m)
                 cost.append(self._cost_function(h, y_onevsall))
             self.theta.append((theta, i))
             self.cost.append((cost, i))
         return self
 
-    def predict(self, X):  # this function calls the max predict function to classify the individul feauter
-        X = np.insert(X, 0, 1, axis=1)
-        X_predicted = [max((self._sigmoid_function(i.dot(theta)), c)
-                           for theta, c in self.theta)[1] for i in X]
+    def predict(self, x):  # this function calls the max predict function to classify the individual features
+        x = np.insert(x, 0, 1, axis=1)
+        x_predicted = [max((self._sigmoid_function(i.dot(theta)), c)
+                           for theta, c in self.theta)[1] for i in x]
+        return x_predicted
 
-        return X_predicted
-
-    def accuracy(self, X, y):  # This function compares the predicted label with the actual label to find the model performance
-        accuracy = sum(self.predict(X) == y) / len(y)
+    def accuracy(self, x, y):  # This function compares the predicted label with the actual label to find the model performance
+        accuracy = sum(self.predict(x) == y) / len(y)
         return accuracy
 
-    def _plot_cost(self, costh):  # This function plot the Cost function value
+    def _plot_cost(self, costh):  # This function plot the cost function value
         for cost, c in costh:
             plt.plot(range(len(cost)), cost, 'r')
             plt.title("Convergence Graph of Cost Function of type-" +

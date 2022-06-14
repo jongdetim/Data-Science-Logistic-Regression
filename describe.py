@@ -1,10 +1,11 @@
+# %%
 import sys
 import pandas as pd
 import numpy as np
 
 import descriptives as descr
 
-# reading file
+# %% reading file
 if len(sys.argv) <= 1:
     print("please provide path to a .csv file")
     exit(1)
@@ -12,11 +13,11 @@ else:
     dataset_path = sys.argv[1]
 data = pd.read_csv(dataset_path)
 
-# cleaning data
+# %% cleaning data
 data = data.select_dtypes([np.number])
 data = data.drop(['Index','index'], axis=1, errors='ignore')
 
-# get descriptives
+# %% get descriptives
 data_descriptives = pd.DataFrame(columns=data.columns)
 for col in data.columns:
     newcol = []
