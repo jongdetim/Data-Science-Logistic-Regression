@@ -28,6 +28,8 @@ class LogisticRegression:
 
     def fit(self, x, y):  # This function primarily calculates the optimal theta value using which we predict the future data
         print("Fitting the given dataset..")
+        self.theta = []
+        self.cost = []
         x = np.insert(x, 0, 1, axis=1)
         m = len(y)
         for i in np.unique(y):
