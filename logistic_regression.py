@@ -1,3 +1,4 @@
+from copy import deepcopy
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,6 +10,7 @@ class LogisticRegression:
         self.n_iter = n_iteration
         self.theta = []
         self.cost = []
+        self.weights = []
 
     # This function is resonsible for calculating the sigmoid value with given parameter
     def _sigmoid_function(self, x):
@@ -37,12 +39,16 @@ class LogisticRegression:
             y_onevsall = np.where(y == i, 1, 0)
             theta = np.zeros(x.shape[1])
             cost = []
+            thetas = []
             for _ in range(self.n_iter):
                 z = x.dot(theta)
                 h = self._sigmoid_function(z)
                 theta = self._gradient_descent(x, h, theta, y_onevsall, m)
+                print(theta)
                 cost.append(self._cost_function(h, y_onevsall))
+                thetas.append(deepcopy(theta))
             self.theta.append((theta, i))
+            self.weights.append((thetas, i))
             self.cost.append((cost, i))
         return self
 
@@ -51,6 +57,13 @@ class LogisticRegression:
         x_predicted = [max((self._sigmoid_function(i.dot(theta)), c)
                            for theta, c in self.theta)[1] for i in x]
         return x_predicted
+
+    def predict2(self, X, y):
+        print(self.theta)
+        print(np.array(self.theta, dtype=object).dot(X.T))
+        X = np.insert(X, 0, 1, axis=1)
+        predictions = self._sigmoid_function(np.array(self.theta).dot(X.T)).T
+        return [np.unique(y)[x] for x in predictions.argmax(1)]
 
     def accuracy(self, x, y):  # This function compares the predicted label with the actual label to find the model performance
         accuracy = sum(self.predict(x) == y) / len(y)
@@ -64,3 +77,19 @@ class LogisticRegression:
             plt.xlabel("Number of Iterations")
             plt.ylabel("Cost")
             plt.show()
+    
+    def _plot_weights(self):
+        weights, c = self.weights[0]
+        for weight in weights:
+            print(weight)
+            plt.plot(range(len(weight)), weight, 'r')
+            plt.title("weights over time of type: " +
+                        str(c) + " vs All")
+            plt.xlabel("features")
+            plt.ylabel("Weight")
+            plt.show()
+
+    def save_model(self, filename='./datasets/weights.csv'):
+        f = open(filename, 'w+')
+        # np.savetxt(f, self.theta)
+        f.write(str(self.theta))

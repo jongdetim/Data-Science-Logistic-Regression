@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 from logistic_regression import LogisticRegression
 
@@ -28,39 +29,51 @@ y = cleaned_data['Hogwarts House'].values
 
 # %% scale data to std
 scaler = StandardScaler()
+scaler.fit(x)
 x = scaler.fit_transform(x)
 
-# %%
-model = LogisticRegression(n_iteration=2)
-
-#%%
-model = model.fit(x, y)
-
-#%%
-prediction = model.predict(x)
-print(sum(prediction[i] == y[i] for i in range(len(prediction))) / len(prediction))
-
-#%%
-model.accuracy(x, y)
-
-# %%
-model._plot_cost(model.cost)
-
-# %%
-from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test = train_test_split(x,y,test_size = 0.33)
-logi = LogisticRegression(alpha=0.0000000001, n_iteration=1).fit(x_train, y_train)
-predition1 = logi.predict(x_test)
-score1 = logi.accuracy(x_test,y_test)
-print("the accuracy of the model is ",score1)
-
 # # %%
-# x = x[0,:]
+# model = LogisticRegression(n_iteration=2)
 
 # #%%
-# np.set_printoptions(threshold=np.inf)
+# model = model.fit(x, y)
+# score = model.accuracy(x, y)
+# print(score)
+# model._plot_cost(model.cost)
 
-# print(x)
-# # %%
+#%%
+# prediction = model.predict(x)
+# print(sum(prediction[i] == y[i] for i in range(len(prediction))) / len(prediction))
 
+#%%
+# model.accuracy(x, y)
+
+# %%
+# model._plot_cost(model.cost)
+
+# %%
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size = 0.33)
+logi = LogisticRegression(alpha=0.01, n_iteration=30).fit(x_train, y_train)
+# prediction1 = logi.predict2(x_test)
+score1 = logi.accuracy(x_train,y_train)
+print("the accuracy of the modelon TRAIN DATASET is:", score1)
+score2 = logi.accuracy(x_test,y_test)
+print("the accuracy of the modelon TEST DATASET is:", score2)
+
+#%%
+# logi._plot_cost(logi.cost)
+
+# %%
+# logi._plot_weights()
+
+# %%
+truth = pd.read_csv('datasets/dataset_truth.csv')
+truth.head()
+
+# %%
+logi.save_model()
+
+# %%
+print(type(logi.theta[0][0]))
+print(logi.theta[0][0])
 # %%
