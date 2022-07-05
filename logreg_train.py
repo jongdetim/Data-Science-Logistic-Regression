@@ -11,7 +11,7 @@ if not sys.__stdin__.isatty():
     dataset_path = "datasets/dataset_train.csv"
 elif len(sys.argv) <= 1:
     print("please provide path to a .csv file")
-    exit(1)
+    sys.exit(1)
 else:
     dataset_path = sys.argv[1]
 data = pd.read_csv(dataset_path)
@@ -35,3 +35,7 @@ model = LogisticRegression(alpha=0.01, n_iteration=10).fit(x, y)
 
 # %% write model to file
 model.save_model()
+
+#%%
+# model.accuracy(x, y)
+# %%
