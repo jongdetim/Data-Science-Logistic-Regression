@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 #%%
 data = pd.read_csv('datasets/dataset_train.csv')
-colors = iter(['red', '#b5651d', 'blue', 'green'])
+colors = iter(['red', 'gold', 'royalblue', 'darkgreen'])
 grps = data.groupby(['Hogwarts House'])
 
 #%%
