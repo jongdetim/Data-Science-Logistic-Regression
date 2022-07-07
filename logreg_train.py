@@ -37,5 +37,7 @@ model = LogisticRegression(alpha=0.01, n_iteration=10).fit(x, y)
 model.save_model()
 
 #%%
-# model.accuracy(x, y)
+model.accuracy(x, y)
+# %%
+model.plot_cost()
 # %%
