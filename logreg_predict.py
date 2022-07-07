@@ -52,5 +52,6 @@ with open(output_path, 'w', encoding='utf8', newline='') as output_file:
     output_writer.writerow(('Index', 'Hogwarts House'))
     for i, prediction in enumerate(predictions):
         output_writer.writerow((i, prediction))
+    print("predictions written to file:", output_path)
 
 # %%

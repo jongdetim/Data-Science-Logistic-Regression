@@ -15,7 +15,8 @@ class LogisticRegression:
     random_weights : bool
         set True to use random starting weights. False to initialize weights to 0. default is False
     '''
-    def __init__(self, alpha:float=0.01, n_iteration:int=100, random_weights:bool=False):
+
+    def __init__(self, alpha: float = 0.01, n_iteration: int = 100, random_weights: bool = False):
         self.alpha = alpha
         self.n_iter = n_iteration
         self.random_weights = random_weights
@@ -31,7 +32,8 @@ class LogisticRegression:
     def _cost_function(self, h, y):
         '''Cost function that the model tries to find the minimum of by using gradient descent'''
         m = len(y)
-        cost = (1 / m) * (np.sum(-y.T.dot(np.log(h)) - (1 - y).T.dot(np.log(1 - h))))
+        cost = (1 / m) * (np.sum(-y.T.dot(np.log(h)) -
+                                 (1 - y).T.dot(np.log(1 - h))))
         return cost
 
     def _gradient_descent(self, x, h, theta, y, m):
@@ -48,7 +50,8 @@ class LogisticRegression:
         x = np.insert(x, 0, 1, axis=1)
         m = len(y)
         for category in np.unique(y):
-            print('Descending the gradient for label type ' + str(category) + ' vs Rest')
+            print('Descending the gradient for label type ' +
+                  str(category) + ' vs Rest')
             y_onevsall = np.where(y == category, 1, 0)
             if (self.random_weights):
                 theta = np.random.rand(x.shape[1]) - 0.5
@@ -88,14 +91,14 @@ class LogisticRegression:
             plt.xlabel("Number of Iterations")
             plt.ylabel("Cost")
             plt.show()
-    
+
     def _plot_weights(self):
         '''Plot the weights of first category after each iteration'''
         weights, c = self.weights[0]
         for weight in weights:
             plt.plot(range(len(weight)), weight, 'r')
             plt.title("weights over time of type: " +
-                        str(c) + " vs All")
+                      str(c) + " vs All")
             plt.xlabel("features")
             plt.ylabel("Weight")
             plt.show()

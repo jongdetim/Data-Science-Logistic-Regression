@@ -1,4 +1,4 @@
-# ! Only to be used as a module, as it redefines built-in functions !
+''' ! Only to be used as a module, as it redefines built-in functions !'''
 
 def sum(data):
     res = 0
