@@ -31,7 +31,7 @@ scaler.fit(x)
 x = scaler.fit_transform(x)
 
 # %% train the model
-model = LogisticRegression(alpha=0.01, n_iteration=10).fit(x, y)
+model = LogisticRegression(alpha=0.01, n_iteration=50).fit(x, y)
 
 # %% write model to file
 model.save_model()

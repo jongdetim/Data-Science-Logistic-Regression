@@ -18,10 +18,10 @@ class LogisticRegression:
     def __init__(self, alpha:float=0.01, n_iteration:int=100, random_weights:bool=False):
         self.alpha = alpha
         self.n_iter = n_iteration
+        self.random_weights = random_weights
         self.theta = []
         self.cost = []
-        self.weights = []
-        self.random_weights = random_weights
+        self.theta_history = []
 
     def _sigmoid_function(self, x):
         '''Sigmoid function to introduce nonlinearity'''
@@ -63,7 +63,7 @@ class LogisticRegression:
                 cost.append(self._cost_function(h, y_onevsall))
                 thetas.append(deepcopy(theta))
             self.theta.append((theta, category))
-            self.weights.append((thetas, category))
+            self.theta_history.append((thetas, category))
             self.cost.append((cost, category))
         return self
 
@@ -90,7 +90,7 @@ class LogisticRegression:
             plt.show()
     
     def _plot_weights(self):
-        '''Plot the weights after each iteration'''
+        '''Plot the weights of first category after each iteration'''
         weights, c = self.weights[0]
         for weight in weights:
             plt.plot(range(len(weight)), weight, 'r')
